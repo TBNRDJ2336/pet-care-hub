@@ -1,0 +1,10 @@
+.DS_Store
+Thumbs.db
+
+# Local editor settings
+.vscode/
+.idea/
+
+# Local inspection and build artifacts
+work/
+outputs/

@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Pet Care Hub</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;700;800&family=Figtree:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#eef7f4;--bg2:#dff0ea;--card:#ffffff;--ink:#0e1b2c;--mute:#4d6070;--line:#c6dcd5;--accent:#e8506a;--lagoon:#1f6f78;--sun:#ffc94d;--shadow:0 30px 60px -25px rgba(14,27,44,.35);
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0b1624;--bg2:#10243a;--card:#142d47;--ink:#eaf6f2;--mute:#9db6c4;--line:#24435f;--accent:#ff7a8e;--lagoon:#6fd3c3;--sun:#ffd36e;--shadow:0 30px 60px -25px rgba(0,0,0,.7)}}
+:root[data-theme="dark"]{--bg:#0b1624;--bg2:#10243a;--card:#142d47;--ink:#eaf6f2;--mute:#9db6c4;--line:#24435f;--accent:#ff7a8e;--lagoon:#6fd3c3;--sun:#ffd36e;--shadow:0 30px 60px -25px rgba(0,0,0,.7)}
+*,*:before,*:after{box-sizing:inherit}
+html{scroll-behavior:smooth;scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 17px/1.55 Figtree,system-ui,sans-serif;max-width:100%;overflow-x:hidden}
+h1,h2,h3{font-family:'Bricolage Grotesque',Figtree,system-ui,sans-serif;line-height:1.05;margin:0}
+button,input,select{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.wrap{width:min(1180px,92%);margin:0 auto}
+nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:color-mix(in srgb,var(--bg) 82%,transparent);backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
+nav .wrap{display:flex;align-items:center;justify-content:space-between;padding:12px 0;gap:12px}
+.logo{font:800 22px 'Bricolage Grotesque',sans-serif;display:flex;gap:8px;align-items:center}
+nav a{color:var(--mute);text-decoration:none;font-weight:500;margin-left:20px}
+nav a:hover{color:var(--ink)}
+.tbtn{border:1px solid var(--line);background:var(--card);border-radius:999px;padding:6px 12px;cursor:pointer;margin-left:16px}
+.hero{background:radial-gradient(900px 500px at 75% 40%,var(--bg2),transparent 70%);overflow:hidden}
+.hero .wrap{display:grid;grid-template-columns:1.05fr 1fr;align-items:center;min-height:min(86vh,720px);gap:20px}
+.hero h1{font-size:clamp(44px,7vw,92px);font-weight:800;letter-spacing:-.03em}
+.hero p{color:var(--mute);max-width:46ch;font-size:19px;margin:20px 0 28px}
+.btn{display:inline-block;background:var(--accent);color:#fff;border:0;border-radius:14px;padding:14px 22px;font-weight:600;cursor:pointer;text-decoration:none;box-shadow:0 12px 24px -10px var(--accent);transition:transform .15s}
+.btn:active{transform:translateY(2px)}
+.btn.ghost{background:transparent;color:var(--ink);box-shadow:none;border:1.5px solid var(--line);margin-left:10px}
+#stage{width:100%;aspect-ratio:1/1;max-height:640px;display:block;touch-action:pan-y;cursor:grab}
+section{padding:84px 0}
+section h2{font-size:clamp(32px,4.5vw,54px);letter-spacing:-.02em;margin-bottom:10px}
+.sub{color:var(--mute);margin:0 0 34px;max-width:56ch}
+.add{display:flex;flex-wrap:wrap;gap:10px;background:var(--card);border:1px solid var(--line);border-radius:20px;padding:16px;margin-bottom:30px}
+.add input,.add select,.mini input{background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:11px 14px;min-width:0}
+.add input{flex:1 1 150px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:26px;perspective:1100px}
+.pet{background:var(--card);border:1px solid var(--line);border-radius:26px;padding:22px;box-shadow:var(--shadow);transform-style:preserve-3d;transition:transform .2s ease-out;will-change:transform}
+.pet .em{font-size:64px;line-height:1;display:inline-block;transform:translateZ(50px);filter:drop-shadow(0 14px 10px rgba(0,0,0,.25))}
+.pet h3{font-size:26px;margin:10px 0 2px;transform:translateZ(28px)}
+.meta{color:var(--mute);font-size:15px}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin:12px 0}
+.chip{background:var(--bg2);border-radius:999px;padding:3px 11px;font-size:14px}
+.mini{display:flex;gap:6px;margin-top:10px}
+.mini input{flex:1;padding:8px 10px;font-size:15px}
+.mini button,.x{border:0;border-radius:10px;background:var(--lagoon);color:var(--bg);padding:8px 12px;cursor:pointer;font-weight:600}
+.x{background:transparent;color:var(--mute);font-weight:500;padding:6px 0;margin-top:8px}
+.today{background:var(--card);border:1px solid var(--line);border-radius:26px;padding:26px;box-shadow:var(--shadow)}
+.bar{height:14px;background:var(--bg2);border-radius:99px;overflow:hidden;margin:12px 0 22px}
+.bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--lagoon),var(--sun));border-radius:99px;transition:width .5s cubic-bezier(.2,.8,.2,1)}
+.row{display:flex;align-items:center;gap:14px;padding:12px 0;border-top:1px solid var(--line)}
+.row time{font:700 18px 'Bricolage Grotesque',sans-serif;width:74px}
+.row .t{flex:1}
+.row.done .t{opacity:.5;text-decoration:line-through}
+.tick{width:44px;height:44px;border-radius:50%;border:2px solid var(--lagoon);background:transparent;cursor:pointer;font-size:20px}
+.row.done .tick{background:var(--lagoon);color:var(--bg)}
+.tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:22px}
+.tabs button{border:1.5px solid var(--line);background:var(--card);border-radius:999px;padding:9px 18px;cursor:pointer;font-weight:600}
+.tabs button[aria-selected="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.tips{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:18px}
+.tip{background:var(--card);border:1px solid var(--line);border-radius:22px;padding:20px}
+.tip h3{font-size:20px;margin:6px 0 6px}.tip p{margin:0;color:var(--mute);font-size:16px}
+.tip .i{font-size:30px}
+.empty{color:var(--mute);padding:18px 0}
+footer{padding:36px 0;color:var(--mute);text-align:center;border-top:1px solid var(--line);font-size:15px}
+@media (max-width:820px){.hero .wrap{grid-template-columns:1fr;min-height:0;padding:36px 0}#stage{max-height:380px}nav a{display:none}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+body:before{content:"";position:fixed;inset:0;z-index:-1;background:radial-gradient(1100px 700px at 8% -8%,color-mix(in srgb,var(--sun) 24%,transparent),transparent 60%),radial-gradient(900px 700px at 100% 35%,color-mix(in srgb,var(--lagoon) 22%,transparent),transparent 60%)}
+.pet{background:linear-gradient(160deg,var(--card),color-mix(in srgb,var(--card) 78%,var(--bg2)));box-shadow:var(--shadow),inset 0 1px 0 rgba(255,255,255,.4)}
+.pet .em{font-size:76px;text-shadow:0 18px 24px rgba(0,0,0,.25)}
+.tip{box-shadow:0 18px 36px -24px rgba(14,27,44,.4)}
+#toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom,0px));transform:translate(-50%,30px);background:var(--ink);color:var(--bg);padding:12px 20px;border-radius:14px;opacity:0;transition:.3s;pointer-events:none;z-index:30}
+#toast.on{opacity:1;transform:translate(-50%,0)}
+body{-webkit-font-smoothing:antialiased}
+nav{background:color-mix(in srgb,var(--bg) 88%,transparent)}
+nav .wrap{padding:10px 0}
+.logo{font-size:20px;letter-spacing:-.02em;gap:10px}
+nav a{font-size:15px}
+.btn{border-radius:12px;padding:13px 22px;box-shadow:inset 0 1px 0 rgba(255,255,255,.25),0 10px 20px -12px var(--accent)}
+.btn.sm{padding:8px 16px;font-size:15px;margin-left:16px;box-shadow:none}
+nav a.btn,nav a.btn:hover{color:#fff}
+.tbtn{width:38px;height:38px;padding:0;display:grid;place-items:center;margin-left:14px}
+.hero h1{font-size:clamp(40px,6vw,78px);letter-spacing:-.035em;line-height:1.02;max-width:13ch}
+.stagewrap{position:relative}
+.glass{position:absolute;left:2%;bottom:7%;background:color-mix(in srgb,var(--card) 72%,transparent);backdrop-filter:blur(14px);border:1px solid var(--line);border-radius:16px;padding:12px 16px;box-shadow:var(--shadow);font-size:15px;line-height:1.35;min-width:200px}
+.glass b{display:block;font:700 18px 'Bricolage Grotesque',sans-serif}
+.glass small{display:block;color:var(--mute)}
+section{padding:96px 0}
+section h2{font-size:clamp(30px,4vw,48px);letter-spacing:-.03em}
+.sub{font-size:18px}
+.add{border-radius:18px;padding:14px;box-shadow:0 10px 30px -22px rgba(14,27,44,.5)}
+.add input,.add select,.mini input{border-radius:10px;padding:12px 14px}
+.add input:focus,.add select:focus,.mini input:focus{border-color:var(--lagoon);outline:none;box-shadow:0 0 0 3px color-mix(in srgb,var(--lagoon) 25%,transparent)}
+.pet{border-radius:22px;padding:24px}
+.pet .em{font-size:64px}
+.pet h3{font-size:24px;letter-spacing:-.02em}
+.chip{border:1px solid var(--line);font-size:13.5px;padding:3px 10px}
+.today{border-radius:22px;padding:28px}
+.row time{font-variant-numeric:tabular-nums}
+.tip{border-radius:18px;padding:22px}
+.tip .i{width:52px;height:52px;display:grid;place-items:center;background:var(--bg2);border-radius:14px;font-size:26px;margin-bottom:12px}
+.tip h3{font-size:19px}
+.tabs button{padding:8px 16px;font-size:15px}
+footer{padding:30px 0;font-size:14px}
+footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+@media (max-width:820px){nav a.btn{display:inline-block}.glass{left:4%;bottom:4%}}
+@media (min-width:2200px){body{font-size:23px}.wrap{width:min(1900px,90%)}.hero .wrap{min-height:min(86vh,1000px)}#stage{max-height:920px}.grid{grid-template-columns:repeat(auto-fill,minmax(360px,1fr))}}
+</style>
+</head>
+<body>
+<nav><div class="wrap"><div class="logo"><svg width="30" height="30" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="9" fill="var(--accent)"/><ellipse cx="16" cy="21" rx="6" ry="5" fill="#fff"/><circle cx="8.5" cy="14" r="2.6" fill="#fff"/><circle cx="14" cy="9.5" r="2.6" fill="#fff"/><circle cx="20" cy="9.5" r="2.6" fill="#fff"/><circle cx="25.5" cy="14" r="2.6" fill="#fff"/></svg>Pet Care Hub</div><div><a href="#pets">Pet profiles</a><a href="#feed">Feeding schedule</a><a href="#care">Care guide</a><button class="tbtn" id="theme" aria-label="Toggle dark mode">◐</button></div></div></nav>
+
+<header class="hero"><div class="wrap">
+<div>
+<h1>Every meal, every pet, on time.</h1>
+<p>Keep your pets' profiles, daily feeding schedules and basic care info in one calm place.</p>
+<a class="btn" href="#pets">Add your pet</a><a class="btn ghost" href="#care">Read the care guide</a>
+</div>
+<div class="stagewrap"><canvas id="stage" aria-label="Rotating 3D paw. Drag to spin it."></canvas><div class="glass" id="hp" aria-live="polite"></div></div>
+</div></header>
+
+<section id="pets"><div class="wrap">
+<h2>Pet profiles</h2>
+<p class="sub">Add each pet once. Hover a card to tilt it in 3D.</p>
+<div class="add">
+<input id="n" placeholder="Pet name" maxlength="24" aria-label="Pet name">
+<select id="t" aria-label="Pet type"><option value="🐶">Dog</option><option value="🐱">Cat</option><option value="🐰">Rabbit</option><option value="🐠">Fish</option><option value="🦜">Bird</option><option value="🐹">Hamster</option><option value="🦔">Hedgehog</option><option value="🐿️">Sugar glider</option><option value="🦎">Lizard</option><option value="🐢">Tortoise</option><option value="🐍">Snake</option><option value="🐸">Frog</option><option value="🕷️">Tarantula</option><option value="✨">Other (type name)</option></select>
+<input id="sp" placeholder="Animal name (e.g. Ferret)" maxlength="20" hidden aria-label="Animal name">
+<input id="a" placeholder="Age (e.g. 3 yrs)" maxlength="14" aria-label="Pet age">
+<input id="w" placeholder="Weight (e.g. 12 kg)" maxlength="14" aria-label="Pet weight">
+<button class="btn" id="addp">Add pet</button>
+</div>
+<div class="grid" id="grid"></div>
+</div></section>
+
+<section id="feed" style="background:var(--bg2)"><div class="wrap">
+<h2>Today's feeding schedule</h2>
+<p class="sub">Tick each meal when it's done. Ticks reset every morning.</p>
+<div class="today"><strong id="pt">0 of 0 meals fed</strong><div class="bar"><i id="pb"></i></div><div id="rows"></div></div>
+</div></section>
+
+<section id="care"><div class="wrap">
+<h2>Basic care guide</h2>
+<p class="sub">General tips only. Ask a vet who treats your pet's species. Wild and exotic animals: laws differ by country and many species are protected, so check local rules and only get captive-bred animals from licensed sellers.</p>
+<div class="tabs" id="tabs" role="tablist"></div>
+<div class="tips" id="tips"></div>
+</div></section>
+
+<footer><div class="wrap"><span>Pet Care Hub</span><span>Your pets and meals are saved only in this browser.</span></div></footer>
+
+<div id="toast" role="status"></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+(function(){
+var $=function(s){return document.querySelector(s)};
+var KEY='pch-v1';
+function seed(){return [{id:1,name:'Biscuit',type:'🐶',age:'3 yrs',w:'14 kg',feeds:[{t:'07:30',f:'Dry kibble'},{t:'18:30',f:'Kibble + wet food'}],fed:{}},{id:2,name:'Mochi',type:'🐱',age:'2 yrs',w:'4 kg',feeds:[{t:'08:00',f:'Wet food'},{t:'20:00',f:'Dry food'}],fed:{}}]}
+function load(){try{var d=JSON.parse(localStorage.getItem(KEY));if(d&&d.length!==undefined)return d}catch(e){}return seed()}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(pets))}catch(e){}}
+var pets=load();
+function today(){return new Date().toISOString().slice(0,10)}
+function esc(s){var d=document.createElement('div');d.textContent=s;return d.innerHTML}
+
+function render(){
+var g=$('#grid');
+if(!pets.length){g.innerHTML='<div class="empty">No pets yet. Add your first pet above.</div>'}
+else g.innerHTML=pets.map(function(p){
+return '<article class="pet tilt"><span class="em">'+p.type+'</span><h3>'+esc(p.name)+'</h3><div class="meta">'+(p.sp?esc(p.sp)+' · ':'')+esc(p.age||'Age not set')+' · '+esc(p.w||'Weight not set')+'</div><div class="chips">'+
+(p.feeds.length?p.feeds.map(function(f){return '<span class="chip">'+f.t+' '+esc(f.f)+'</span>'}).join(''):'<span class="chip">No meals yet</span>')+
+'</div><div class="mini"><input type="time" value="12:00" data-t="'+p.id+'" aria-label="Meal time"><input placeholder="Food" data-f="'+p.id+'" aria-label="Food"><button data-add="'+p.id+'">Add meal</button></div><button class="x" data-del="'+p.id+'">Remove '+esc(p.name)+'</button></article>'}).join('');
+var all=[];
+pets.forEach(function(p){p.feeds.forEach(function(f,i){all.push({p:p,f:f,i:i,k:today()+'-'+i})})});
+all.sort(function(a,b){return a.f.t<b.f.t?-1:1});
+var done=all.filter(function(x){return x.p.fed[x.k]}).length;
+$('#pt').textContent=done+' of '+all.length+' meals fed';
+$('#pb').style.width=(all.length?done/all.length*100:0)+'%';
+var nx=all.filter(function(x){return !x.p.fed[x.k]})[0];$('#hp').innerHTML=nx?'<small>Next meal</small><b>'+nx.f.t+' · '+esc(nx.p.name)+'</b><small>'+esc(nx.f.f)+'</small>':'<small>Today</small><b>'+(all.length?'All meals fed':'No meals yet')+'</b><small>'+done+' of '+all.length+' fed</small>';
+$('#rows').innerHTML=all.length?all.map(function(x){var d=x.p.fed[x.k];
+return '<div class="row'+(d?' done':'')+'"><time>'+x.f.t+'</time><div class="t">'+x.p.type+' <b>'+esc(x.p.name)+'</b> · '+esc(x.f.f)+'</div><button class="tick" data-tick="'+x.p.id+'" data-k="'+x.k+'" aria-label="Mark fed" aria-pressed="'+!!d+'">'+(d?'✓':'')+'</button></div>'}).join(''):'<div class="empty">No meals scheduled. Add a meal on a pet card.</div>';
+}
+document.addEventListener('click',function(e){
+var b=e.target.closest('button');if(!b)return;
+var id;
+if(b.id==='addp'){var n=$('#n').value.trim();if(!n){$('#n').focus();return}
+pets.push({id:Date.now(),name:n,type:$('#t').value,sp:$('#t').value==='✨'?($('#sp').value.trim()||'Other'):$('#t').selectedOptions[0].text,age:$('#a').value.trim(),w:$('#w').value.trim(),feeds:[],fed:{}});
+$('#n').value=$('#a').value=$('#w').value=$('#sp').value='';save();render();toast(n+' added');var lc=$('#grid').lastElementChild;if(lc)lc.scrollIntoView({behavior:'smooth',block:'nearest'});return}
+if(b.dataset.add){id=+b.dataset.add;var card=b.parentNode;var t=card.querySelector('[data-t]').value,f=card.querySelector('[data-f]').value.trim()||'Meal';
+pets.forEach(function(p){if(p.id===id&&t)p.feeds.push({t:t,f:f})});save();render();return}
+if(b.dataset.del){id=+b.dataset.del;pets=pets.filter(function(p){return p.id!==id});save();render();return}
+if(b.dataset.tick){id=+b.dataset.tick;pets.forEach(function(p){if(p.id===id)p.fed[b.dataset.k]=!p.fed[b.dataset.k]});save();render()}
+});
+// 3D tilt on cards
+var grid=$('#grid');
+grid.addEventListener('pointermove',function(e){var c=e.target.closest('.tilt');if(!c)return;var r=c.getBoundingClientRect();
+var x=(e.clientX-r.left)/r.width-.5,y=(e.clientY-r.top)/r.height-.5;c.style.transform='rotateY('+x*16+'deg) rotateX('+-y*16+'deg) translateZ(10px)'});
+grid.addEventListener('pointerout',function(e){var c=e.target.closest('.tilt');if(c)c.style.transform=''});
+
+// Care guide
+var CARE={
+'🐶 Dogs':[['🍖','Feeding','Feed adult dogs twice a day at fixed times. Measure portions by weight and age.'],['🚶','Exercise','Most dogs need 30–120 minutes of walking or play every day.'],['🦷','Grooming','Brush teeth several times a week. Brush the coat weekly, more often if it sheds.'],['💉','Vet care','Keep vaccines, flea and tick control and deworming up to date.']],
+'🐱 Cats':[['🥫','Feeding','Cats need meat-based food. Offer small meals 2–3 times a day and fresh water always.'],['🧺','Litter','Scoop daily and fully change the litter weekly. Keep one box per cat, plus one extra.'],['🧶','Play','Short daily play sessions keep indoor cats fit and calm.'],['💉','Vet care','Yearly check-ups, vaccines and parasite control keep cats healthy.']],
+'🐰 Rabbits':[['🥬','Feeding','Unlimited hay should be most of the diet. Add fresh greens and a small portion of pellets.'],['🏠','Space','Give a large pen with daily time to run and hop outside it.'],['🦷','Teeth','Rabbit teeth never stop growing. Hay and chew toys wear them down.'],['🌡️','Heat','Rabbits overheat easily. Keep them cool and out of direct sun.']],
+'🐠 Fish':[['🍤','Feeding','Feed a small pinch once or twice a day. Remove what is not eaten in two minutes.'],['💧','Water','Change 20–30% of the water weekly. Treat tap water before use.'],['🌡️','Temperature','Keep the temperature steady and suited to the species. Use a heater and thermometer.'],['🔍','Watch','Check daily for spots, clamped fins or gasping at the surface.']],
+'🦜 Birds':[['🌾','Feeding','Offer a quality seed or pellet mix with fresh vegetables daily.'],['🕊️','Social','Birds are social. Spend time with them every day.'],['🛁','Hygiene','Clean the cage and replace water daily. Offer a bath weekly.'],['😴','Sleep','Give 10–12 hours of dark, quiet sleep each night.']],
+'🐹 Hamsters':[['🏠','Housing','Keep one hamster per cage. A deep bedding layer lets it burrow.'],['🎡','Exercise','Use a solid wheel at least 20 cm wide so the back stays straight.'],['🌰','Feeding','Give a seed and pellet mix with a little fresh vegetable. Hamsters hoard, so check stashes.'],['🌙','Night','Hamsters are nocturnal. Handle gently in the evening and avoid waking them by day.']],
+'🦔 Hedgehogs':[['🪱','Feeding','Feed insect-based protein such as mealworms and a quality hedgehog or cat kibble.'],['🌡️','Warmth','Keep the room around 22–26°C. Cold can push a hedgehog into a dangerous hibernation attempt.'],['🎡','Space','Give a big, flat-floored enclosure and a solid wheel with no rungs.'],['🌙','Night','Hedgehogs are nocturnal and shy. Handle slowly in the evening.']],
+'🐿️ Sugar gliders':[['👯','Social','Gliders get lonely. Keep them in pairs or small groups.'],['🍯','Feeding','Offer insects, fruit, vegetables and a vet-approved supplement mix.'],['🌳','Space','Use a tall cage with branches and a large wheel for gliding exercise.'],['🩺','Vet care','Find an exotic-animal vet before you bring one home.']],
+'🦎 Lizards':[['☀️','UVB light','Most pet lizards, like bearded dragons, need UVB light for 10–12 hours a day.'],['🔥','Heat','Give a warm basking spot and a cooler side so the lizard can choose its temperature.'],['🦗','Feeding','Feed gut-loaded insects and fresh greens, sized to the lizard.'],['🏠','Tank','Use a large, secure tank with hiding spots, clean it often and watch for stress.']],
+'🐢 Tortoises':[['🥬','Feeding','Feed mostly leafy greens and weeds with calcium. Avoid fruit and pet-store pellets as the main diet.'],['☀️','Light and heat','Give UVB light and a warm basking area, or safe outdoor sun.'],['🌿','Space','Tortoises need room to roam. A small tank is too small.'],['⏳','Lifespan','Many live for decades, so plan for who will care for them long term.']],
+'🐍 Snakes':[['🐭','Feeding','Feed whole prey sized to the snake, ideally frozen and thawed. Feed on a regular schedule.'],['🌡️','Heat','Use a thermostat-controlled heat source with a warm and a cool end.'],['🔒','Security','Use a locked enclosure. Snakes are excellent escape artists.'],['✋','Handling','Wait about 48 hours after a meal before handling.']],
+'🐸 Frogs':[['💧','Water','Use dechlorinated water and keep the enclosure humid and clean.'],['🧤','Handling','Frog skin is delicate. Handle as little as possible, with wet, clean hands.'],['🦗','Feeding','Feed live insects of a suitable size, dusted with calcium.'],['🔍','Watch','Look for dull skin, swelling or loss of appetite and see a vet early.']],
+'🕷️ Tarantulas':[['🦗','Feeding','Feed a cricket or similar every few days to a week. Remove uneaten prey.'],['💧','Water','Keep a shallow water dish and slightly damp substrate for species that need it.'],['🚫','Handling','Avoid handling. They can bite or flick irritating hairs, and a fall can kill them.'],['🪴','Home','Provide deep substrate to burrow in and a secure lid.']],
+'🦁 Big wild animals':[['⚖️','Law','Tigers, lions, monkeys, wild foxes and most native wildlife are protected in many countries, and keeping them can be illegal.'],['🌿','Welfare','They have complex needs that homes cannot meet, and they can be dangerous to people.'],['🏞️','Sanctuaries','If you find injured or orphaned wildlife, contact a licensed wildlife rescue or forest department.'],['❤️','Alternatives','Support accredited sanctuaries, or choose a captive-bred small exotic pet that is legal where you live.']]};
+var names=Object.keys(CARE),tabs=$('#tabs');
+function show(k){
+tabs.innerHTML=names.map(function(n){return '<button role="tab" aria-selected="'+(n===k)+'" data-tab="'+n+'">'+n+'</button>'}).join('');
+$('#tips').innerHTML=CARE[k].map(function(t){return '<div class="tip"><div class="i">'+t[0]+'</div><h3>'+t[1]+'</h3><p>'+t[2]+'</p></div>'}).join('')}
+tabs.addEventListener('click',function(e){var b=e.target.closest('[data-tab]');if(b)show(b.dataset.tab)});
+show(names[0]);
+
+// Theme toggle
+var root=document.documentElement;
+$('#theme').addEventListener('click',function(){var dark=getComputedStyle(root).getPropertyValue('--bg').trim()==='#0b1624';root.setAttribute('data-theme',dark?'light':'dark');paw.recolor&&paw.recolor()});
+render();
+
+function toast(m){var t=$('#toast');t.textContent=m;t.classList.add('on');clearTimeout(toast.h);toast.h=setTimeout(function(){t.classList.remove('on')},2200)}
+$('#t').addEventListener('change',function(){$('#sp').hidden=this.value!=='✨'});
+['#n','#a','#w','#sp'].forEach(function(q){$(q).addEventListener('keydown',function(e){if(e.key==='Enter')$('#addp').click()})});
+// 3D paw hero (three.js)
+var paw={};
+var cv=$('#stage');
+if(window.THREE){
+var R=new THREE.WebGLRenderer({canvas:cv,antialias:true,alpha:true});
+R.setPixelRatio(Math.min(Math.max(window.devicePixelRatio||1,2),3));R.outputEncoding=THREE.sRGBEncoding;R.toneMapping=THREE.ACESFilmicToneMapping;R.toneMappingExposure=1.15;
+var S=new THREE.Scene(),C=new THREE.PerspectiveCamera(35,1,.1,50);C.position.set(0,0,9);
+S.add(new THREE.HemisphereLight(0xffffff,0x335566,.9));
+var key=new THREE.DirectionalLight(0xffffff,1.1);key.position.set(4,6,6);S.add(key);
+var rim=new THREE.PointLight(0xffc94d,1.2,30);rim.position.set(-5,-2,4);S.add(rim);
+var grp=new THREE.Group();S.add(grp);
+var cols=[0xe8506a,0xffc94d,0x4fd1c5,0x7c6cf0,0xff8a3d];var mats=cols.map(function(c){return new THREE.MeshPhysicalMaterial({color:c,roughness:.3,metalness:.05,clearcoat:1,clearcoatRoughness:.08})});
+function blob(x,y,sx,sy,rz,c){var m=new THREE.Mesh(new THREE.SphereGeometry(1,64,48),mats[c]);m.position.set(x,y,0);m.scale.set(sx,sy,.75);m.rotation.z=rz||0;grp.add(m)}
+blob(0,-.9,1.7,1.35,0,0);
+blob(-1.95,.55,.62,.85,.45,1);blob(-.7,1.55,.62,.88,.12,2);blob(.7,1.55,.62,.88,-.12,3);blob(1.95,.55,.62,.85,-.45,4);
+var orbs=[];for(var i=0;i<14;i++){var o=new THREE.Mesh(new THREE.SphereGeometry(.12+Math.random()*.14,24,16),new THREE.MeshPhysicalMaterial({color:i%2?0x6fd3c3:0xffc94d,roughness:.25,clearcoat:1}));
+o.userData={a:Math.random()*6.28,r:3.4+Math.random()*1.4,y:(Math.random()-.5)*4,s:.2+Math.random()*.4};S.add(o);orbs.push(o)}
+var tx=0,ty=0,drag=false,lx=0,spin=0;
+cv.addEventListener('pointerdown',function(e){drag=true;lx=e.clientX;cv.style.cursor='grabbing'});
+window.addEventListener('pointerup',function(){drag=false;cv.style.cursor='grab'});
+window.addEventListener('pointermove',function(e){var r=cv.getBoundingClientRect();tx=((e.clientX-r.left)/r.width-.5)*.6;ty=((e.clientY-r.top)/r.height-.5)*.4;if(drag){spin+=(e.clientX-lx)*.01;lx=e.clientX}});
+function size(){var w=cv.clientWidth,h=cv.clientHeight;R.setSize(w,h,false);C.aspect=w/h;C.updateProjectionMatrix()}
+size();window.addEventListener('resize',size);
+var calm=window.matchMedia('(prefers-reduced-motion:reduce)').matches,t0=0;
+(function loop(t){requestAnimationFrame(loop);t0=t*.001;
+grp.rotation.y+=((calm?0:Math.sin(t0*.6)*.5)+spin+tx-grp.rotation.y)*.06;
+grp.rotation.x+=(ty-grp.rotation.x)*.06;
+grp.position.y=calm?0:Math.sin(t0*1.2)*.18;
+orbs.forEach(function(o){var d=o.userData;if(!calm)d.a+=d.s*.01;o.position.set(Math.cos(d.a)*d.r,d.y+Math.sin(t0+d.a)*.2,Math.sin(d.a)*d.r*.5)});
+if(!calm)mats.forEach(function(m){m.color.offsetHSL(.0008,0,0)});R.render(S,C)})(0);
+}
+})();
+</script>
+</body>
+</html>
